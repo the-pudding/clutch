@@ -11,7 +11,7 @@
 	let videoEl;
 	let duration;
 	let currentTime = 0;
-	let paused = false;
+	let paused = true;
 	let loaded = false;
 	let guessed = false;
 
@@ -47,6 +47,8 @@
 				const videoUrl = URL.createObjectURL(videoBlob);
 				videoEl.src = videoUrl;
 				loaded = true;
+				videoEl.play();
+				paused = false;
 			}
 		};
 		request.send();
@@ -55,7 +57,6 @@
 
 <div class="video-wrapper">
 	<video
-		autoplay
 		playsinline
 		poster=""
 		bind:this={videoEl}
