@@ -3,6 +3,7 @@
 	import videos from "$data/videos.csv";
 
 	let current = 0;
+	let started = false;
 	let finished = false;
 
 	const data = videos.map((d) => ({
@@ -19,12 +20,14 @@
 	};
 </script>
 
-<p>shot {current + 1} / {data.length}</p>
-{#key current}
-	<Video id={d.id} stop={d.stop} answer={d.made} on:end={onEnd} />
-{/key}
+<button on:click={() => (started = true)}>begin</button>
 
-{#if finished}
+{#if started}
+	<p>shot {current + 1} / {data.length}</p>
+	{#key current}
+		<Video id={d.id} stop={d.stop} answer={d.made} on:end={onEnd} />
+	{/key}
+{:else if finished}
 	<p>now read the story</p>
 {/if}
 
