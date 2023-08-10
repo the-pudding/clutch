@@ -4,4 +4,4 @@
 </script>
 
 <Game />
-<Scatter />
+<!-- <Scatter /> -->
