@@ -3,7 +3,6 @@
 
 	export let id;
 	export let stop;
-	export let answer;
 
 	const dispatch = createEventDispatcher();
 	const src = `assets/video/${id}.mp4`;
@@ -15,7 +14,7 @@
 	let loaded = false;
 	let guessed = false;
 
-	$: showOptions = paused && !guessed;
+	$: showOptions = loaded && paused && !guessed;
 	$: if (loaded && currentTime >= stop && !paused && !guessed) {
 		videoEl.pause();
 		paused = true;
@@ -23,11 +22,9 @@
 
 	const guess = (userGuess) => {
 		guessed = true;
-		if (userGuess === answer) {
-			console.log("correct");
-		} else {
-			console.log("incorrect");
-		}
+
+		dispatch("guess", { content: userGuess });
+
 		videoEl.play();
 		paused = false;
 	};
@@ -63,24 +60,50 @@
 		bind:currentTime
 		bind:duration
 		on:ended={onEnd}
+		class:blurred={showOptions}
 	/>
-</div>
-<div class="buttons" class:visible={showOptions}>
-	<button on:click={() => guess(true)}>make</button>
-	<button on:click={() => guess(false)}>miss</button>
+
+	<div class="overlay" class:visible={showOptions}>
+		<div>
+			<button on:click={() => guess(true)}>make</button>
+			<button on:click={() => guess(false)}>miss</button>
+		</div>
+	</div>
 </div>
 
 <style>
 	.video-wrapper {
-		height: 300px;
+		position: relative;
+		margin: auto;
+		max-width: 700px;
 	}
 	video {
+		width: 100%;
+		margin: auto;
+		transition: opacity calc(var(--1s) * 0.5);
+	}
+	video.blurred {
+		opacity: 0.2;
+	}
+	.overlay {
+		opacity: 0;
+		transition: opacity calc(var(--1s) * 0.5);
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background: rgb(144, 144, 144, 0.5);
 		height: 100%;
+		width: 100%;
 	}
-	.buttons {
-		visibility: hidden;
+	button {
+		background: var(--color-green);
 	}
-	.buttons.visible {
-		visibility: visible;
+	.overlay.visible {
+		opacity: 1;
 	}
 </style>
