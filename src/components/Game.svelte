@@ -50,7 +50,6 @@
 		if (currentI < lastIndex) currentI += 1;
 		else finished = true;
 	};
-
 	const more = () => {
 		lastIndex = shuffledData.length - 1;
 		currentI += 1;

@@ -6,6 +6,7 @@
 	export let fill = "#ccc";
 	export let stroke = "#000";
 	export let strokeWidth = 0;
+	export let highlight;
 </script>
 
 <g>
@@ -13,6 +14,20 @@
 		{@const cx = $xGet(d)}
 		{@const cy = $yGet(d)}
 		{@const radius = $rGet(d)}
-		<circle {cx} {cy} r={radius} {fill} {stroke} stroke-width={strokeWidth} />
+		<circle
+			{cx}
+			{cy}
+			r={radius}
+			{fill}
+			{stroke}
+			stroke-width={strokeWidth}
+			class:highlight={d.pid === highlight}
+		/>
 	{/each}
 </g>
+
+<style>
+	.highlight {
+		fill: black;
+	}
+</style>

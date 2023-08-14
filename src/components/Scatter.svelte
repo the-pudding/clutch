@@ -7,26 +7,27 @@
 	import data from "$data/scatterplot.csv";
 
 	const padding = 10;
-	const color = "var(--color-green)";
-	const xKey = "avg_swg_made_per_game";
+	const xKey = "swg_made_per_game";
 	const yKey = "pct_adjusted";
-	const rKey = "total_shots_all";
+	const rKey = "total_shots_taken";
 	let tooltipData = undefined;
 	let tooltipX = 0;
 	let tooltipY = 0;
+	let highlight;
 
 	data.forEach((d) => {
 		d[xKey] = +d[xKey];
 		d[yKey] = +d[yKey];
 		d[rKey] = +d[rKey];
+		d.pid = +d.pid;
+		d.highlight = false;
 	});
 
 	const tooltipChange = (d) => {
 		tooltipData = d.detail.data;
 		tooltipX = d.detail[0];
 		tooltipY = d.detail[1];
-
-		// TODO: highlight the circle that's being hovered
+		highlight = d.detail.data.pid;
 	};
 </script>
 
@@ -46,17 +47,12 @@
 		</Svg>
 
 		<Svg>
-			<ScatterSvg fill={color} />
-			<Voronoi stroke="#333" on:voronoi-mouseover={tooltipChange} />
+			<ScatterSvg fill={"var(--color-green)"} {highlight} />
+			<Voronoi on:voronoi-mouseover={tooltipChange} />
 		</Svg>
 	</LayerCake>
 
-	<div
-		class="tooltip"
-		class:visible={tooltipData}
-		style:left={`${tooltipX}px`}
-		style:top={`${tooltipY}px`}
-	>
+	<div class="tooltip" class:visible={tooltipData}>
 		<div class="name">{tooltipData?.name}</div>
 		<div>{tooltipData?.[xKey].toFixed(2)} average swing made / game</div>
 		<div>{tooltipData?.[rKey]} clutch shots taken</div>

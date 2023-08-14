@@ -3,5 +3,5 @@
 	import Scatter from "$components/Scatter.svelte";
 </script>
 
-<Game />
-<!-- <Scatter /> -->
+<!-- <Game /> -->
+<Scatter />
