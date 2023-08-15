@@ -4,15 +4,16 @@
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import Voronoi from "$components/layercake/Voronoi.svelte";
 	import ScatterSvg from "$components/layercake/Scatter.svg.svelte";
-	import data from "$data/scatterplot.csv";
+	import Tooltip from "$components/layercake/Tooltip.html.svelte";
+
+	export let data;
 
 	const padding = 10;
 	const xKey = "swg_made_per_game";
 	const yKey = "pct_adjusted";
 	const rKey = "total_shots_taken";
-	let tooltipData = undefined;
-	let tooltipX = 0;
-	let tooltipY = 0;
+
+	let evt;
 	let highlight;
 
 	data.forEach((d) => {
@@ -23,15 +24,13 @@
 		d.highlight = false;
 	});
 
-	const tooltipChange = (d) => {
-		tooltipData = d.detail.data;
-		tooltipX = d.detail[0];
-		tooltipY = d.detail[1];
-		highlight = d.detail.data.pid;
+	const tooltipChange = (e) => {
+		evt = e;
+		highlight = e.detail.data.pid;
 	};
 </script>
 
-<div class="chart-container">
+<div class="chart-container" on:mouseleave={() => (evt = undefined)} role="img">
 	<LayerCake
 		padding={{ top: 10, right: 5, bottom: 20, left: 25 }}
 		x={xKey}
@@ -43,7 +42,7 @@
 	>
 		<Svg>
 			<AxisX gridlines={false} />
-			<AxisY gridlines={false} ticks={4} />
+			<AxisY gridlines={true} />
 		</Svg>
 
 		<Svg>
@@ -52,30 +51,25 @@
 		</Svg>
 	</LayerCake>
 
-	<div class="tooltip" class:visible={tooltipData}>
-		<div class="name">{tooltipData?.name}</div>
-		<div>{tooltipData?.[xKey].toFixed(2)} average swing made / game</div>
-		<div>{tooltipData?.[rKey]} clutch shots taken</div>
-	</div>
+	{#if evt}
+		<Tooltip {evt} let:data>
+			<div class="name">{data.name}</div>
+			<div>Adj. shooting %: {data.pct_adjusted.toFixed(1)}</div>
+			<div>Swing made per game: {data.swg_made_per_game.toFixed(3)}</div>
+			<div>Clutch shots: {data.total_shots_taken}</div>
+		</Tooltip>
+	{/if}
 </div>
 
 <style>
 	.chart-container {
 		position: relative;
-		width: 100%;
+		max-width: 900px;
+		margin: auto;
 		height: 500px;
-	}
-	.tooltip {
-		position: absolute;
-		visibility: hidden;
-		background: var(--color-gray-100);
-		padding: 0.3rem;
 	}
 	.name {
 		font-size: 1.5rem;
 		font-weight: bold;
-	}
-	.tooltip.visible {
-		visibility: visible;
 	}
 </style>

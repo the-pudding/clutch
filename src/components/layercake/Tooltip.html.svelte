@@ -7,15 +7,15 @@
 	let left;
 
 	$: if (evt.detail) {
-		top = `${evt.detail.e.layerY + offset}px`;
-		left = `${evt.detail.e.layerX}px`;
+		top = `${evt.detail[1] + offset}px`;
+		left = `${evt.detail[0]}px`;
 	}
 </script>
 
 {#if evt.detail}
 	<div style:top style:left>
 		<small>
-			<slot detail={evt.detail} />
+			<slot data={evt.detail.data} />
 		</small>
 	</div>
 {/if}
