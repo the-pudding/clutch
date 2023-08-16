@@ -10,6 +10,9 @@
 	/** @type {Number} [r=5] - The circle radius. */
 	export let r = 5;
 
+	const arrowW = 10;
+	const arrowH = 5;
+
 	$: midHeight = $yScale.bandwidth() / 2;
 </script>
 
@@ -22,6 +25,19 @@
 				x1={Math.min(...xVals)}
 				y1={yVal + midHeight}
 				x2={Math.max(...xVals)}
+				y2={yVal + midHeight}
+			/>
+			<!-- arrow head -->
+			<line
+				x1={xVals[1] + arrowW * (xVals[1] < xVals[0] ? 1 : -1)}
+				y1={yVal + (midHeight - arrowH)}
+				x2={xVals[1] + r * (xVals[1] < xVals[0] ? 1 : -1)}
+				y2={yVal + midHeight}
+			/>
+			<line
+				x1={xVals[1] + arrowW * (xVals[1] < xVals[0] ? 1 : -1)}
+				y1={yVal + (midHeight + arrowH)}
+				x2={xVals[1] + r * (xVals[1] < xVals[0] ? 1 : -1)}
 				y2={yVal + midHeight}
 			/>
 
