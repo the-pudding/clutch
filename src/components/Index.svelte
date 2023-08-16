@@ -1,10 +1,14 @@
 <script>
 	import Game from "$components/Game.svelte";
 	import Scatter from "$components/Scatter.svelte";
-	import dataNba from "$data/scatterplot-nba.csv";
-	import dataWnba from "$data/scatterplot-wnba.csv";
+	import FreeThrows from "$components/FreeThrows.svelte";
+	import nba from "$data/players-nba.csv";
+	import wnba from "$data/players-wnba.csv";
 </script>
 
 <!-- <Game /> -->
-<Scatter data={dataNba} />
-<Scatter data={dataWnba} />
+<Scatter data={nba} />
+<Scatter data={wnba} />
+
+<!-- <FreeThrows data={nba} />
+<FreeThrows data={wnba} /> -->
