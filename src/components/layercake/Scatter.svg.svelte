@@ -28,6 +28,6 @@
 
 <style>
 	.highlight {
-		fill: black;
+		fill: lime;
 	}
 </style>

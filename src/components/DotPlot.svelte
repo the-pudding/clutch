@@ -4,29 +4,35 @@
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import { LayerCake, Svg } from "layercake";
 	import { scaleBand, scaleOrdinal } from "d3-scale";
+	import _ from "lodash";
 
 	export let data;
+	export let league;
 
 	const yKey = "name";
 	const xKey = ["ft_pct_all", "ft_pct_clutch"];
-	const seriesColors = ["grey", "gold"];
-	const names = data.map((d) => d.name);
+	const seriesColors = ["var(--color-gray-200)", "var(--color-green)"];
+	const ftaThreshold = { nba: 50, wnba: 15 };
 
-	data.forEach((d) => {
-		xKey.forEach((name) => {
-			d[name] = +d[name];
+	$: {
+		data.forEach((d) => {
+			xKey.forEach((name) => {
+				d[name] = +d[name];
+			});
+			d.fta_clutch = +d.fta_clutch;
 		});
-	});
-	data.sort((a, b) => {
-		const aDiff = a[xKey[0]] - a[xKey[1]];
-		const bDiff = b[xKey[0]] - b[xKey[1]];
-		return bDiff - aDiff;
-	});
+	}
+	$: sorted = _.sortBy(
+		data.filter((d) => d.fta_clutch > ftaThreshold[league]),
+		(d) => d[xKey[0]] - d[xKey[1]]
+	);
+	$: displayData = [..._.take(sorted, 10), ..._.takeRight(sorted, 10)];
+	$: names = displayData.map((d) => d.name);
 </script>
 
 <div class="chart-container">
 	<LayerCake
-		padding={{ right: 10, bottom: 20, left: 30 }}
+		padding={{ top: 30, right: 10, bottom: 20, left: 30 }}
 		x={xKey}
 		y={yKey}
 		yScale={scaleBand().paddingInner(0.05).round(true)}
@@ -35,11 +41,17 @@
 		zScale={scaleOrdinal()}
 		zDomain={xKey}
 		zRange={seriesColors}
-		{data}
+		data={displayData}
 	>
 		<Svg>
 			<AxisX />
-			<AxisY ticks={names} />
+			<AxisY
+				ticks={names}
+				formatTick={(d) =>
+					`${d} (${
+						displayData.find((x) => x.name === d)?.fta_clutch
+					} clutch FTA)`}
+			/>
 			<ClevelandDotPlot />
 		</Svg>
 	</LayerCake>
@@ -49,6 +61,6 @@
 	.chart-container {
 		max-width: 900px;
 		margin: auto;
-		height: 5000px;
+		height: 800px;
 	}
 </style>

@@ -10,19 +10,21 @@
 
 	const padding = 10;
 	const xKey = "swg_made_per_game";
-	const yKey = "pct_adjusted";
-	const rKey = "total_shots_taken";
+	const yKey = "pct_clutch_adjusted";
+	const rKey = "total_clutch_shots";
 
 	let evt;
 	let highlight;
 
-	data.forEach((d) => {
-		d[xKey] = +d[xKey];
-		d[yKey] = +d[yKey];
-		d[rKey] = +d[rKey];
-		d.pid = +d.pid;
-		d.highlight = false;
-	});
+	$: {
+		data.forEach((d) => {
+			d[xKey] = +d[xKey];
+			d[yKey] = +d[yKey];
+			d[rKey] = +d[rKey];
+			d.pid = +d.pid;
+			d.highlight = false;
+		});
+	}
 
 	const tooltipChange = (e) => {
 		evt = e;
@@ -41,7 +43,7 @@
 		{data}
 	>
 		<Svg>
-			<AxisX gridlines={false} />
+			<AxisX gridlines={true} />
 			<AxisY gridlines={true} />
 		</Svg>
 
@@ -54,9 +56,9 @@
 	{#if evt}
 		<Tooltip {evt} let:data>
 			<div class="name">{data.name}</div>
-			<div>Adj. shooting %: {data.pct_adjusted.toFixed(1)}</div>
+			<div>Adj. shooting %: {data.pct_clutch_adjusted.toFixed(1)}</div>
 			<div>Swing made per game: {data.swg_made_per_game.toFixed(3)}</div>
-			<div>Clutch shots: {data.total_shots_taken}</div>
+			<div>Clutch shots: {data.total_clutch_shots}</div>
 		</Tooltip>
 	{/if}
 </div>

@@ -25,7 +25,7 @@
 	{#each tickVals as tick}
 		<g
 			class="tick tick-{tick}"
-			transform="translate({$xRange[0]}, {$yScale(tick)})"
+			transform="translate({$xRange[0]}, {$yScale(tick) || 0})"
 		>
 			{#if gridlines !== false}
 				<line class="gridline" x2="100%" y1={yTick} y2={yTick} />
