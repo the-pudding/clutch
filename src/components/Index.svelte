@@ -7,6 +7,7 @@
 
 <p>what is swing</p> -->
 
+<ToggleableChart type="bar" />
 <ToggleableChart type="scatter" />
 <ToggleableChart type="dot" />
 
