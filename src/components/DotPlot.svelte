@@ -61,6 +61,6 @@
 	.chart-container {
 		max-width: 900px;
 		margin: auto;
-		height: 800px;
+		height: 600px;
 	}
 </style>

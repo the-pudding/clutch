@@ -30,9 +30,13 @@
 		evt = e;
 		highlight = e.detail.data.pid;
 	};
+	const tooltipExit = (e) => {
+		evt = undefined;
+		highlight = undefined;
+	};
 </script>
 
-<div class="chart-container" on:mouseleave={() => (evt = undefined)} role="img">
+<div class="chart-container" on:mouseleave={tooltipExit} role="img">
 	<LayerCake
 		padding={{ top: 10, right: 5, bottom: 20, left: 25 }}
 		x={xKey}

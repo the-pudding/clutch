@@ -27,7 +27,11 @@
 </g>
 
 <style>
+	circle {
+		opacity: 0.8;
+	}
 	.highlight {
+		opacity: 1;
 		fill: lime;
 	}
 </style>
