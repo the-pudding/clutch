@@ -2,13 +2,20 @@
 	import copy from "$data/copy.json";
 	import TugOfWar from "$components/Swing.TugOfWar.svelte";
 	import Video from "$components/Swing.Video.svelte";
+
+	const chunks = copy.swing.map((d) => ({
+		...d,
+		start: +d.start,
+		end: +d.end,
+		pause: +d.pause
+	}));
 </script>
 
-{#each copy.swing as { type, value, start, end, preText, postText }}
+{#each chunks as { type, value, start, end, pause }}
 	{#if type === "text"}
 		<p>{@html value}</p>
 	{:else}
-		<Video {start} {end} />
+		<Video {start} {end} {pause} />
 	{/if}
 {/each}
 

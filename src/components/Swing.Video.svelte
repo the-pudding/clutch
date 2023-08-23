@@ -1,15 +1,16 @@
 <script>
-	import { getContext } from "svelte";
 	import YouTubePlayer from "youtube-player";
 	import { onMount } from "svelte";
 
 	export let start;
 	export let end;
+	export let pause;
 
 	let animationFrame;
 	let playerEl;
 	let player;
 	let paused = true;
+	let revealed = false;
 	let currentTime = 0;
 
 	onMount(() => {
@@ -21,9 +22,8 @@
 		pauseVideo();
 	});
 
-	$: if (currentTime >= end) {
-		restart();
-	}
+	$: if (!revealed && currentTime >= pause) pauseVideo();
+	$: if (currentTime >= end) restart();
 
 	const restart = () => {
 		player.seekTo(start);
@@ -45,15 +45,22 @@
 			cancelAnimationFrame(animationFrame);
 		}
 	};
+	const reveal = () => {
+		revealed = true;
+		playVideo();
+	};
 </script>
 
 <div class="wrapper">
-	<button on:click={paused ? playVideo : pauseVideo}
-		>{paused ? "play" : "pause"}</button
-	>
-	<button on:click={restart}>restart</button>
+	<button on:click={playVideo}>play</button>
 	<div id="video" bind:this={playerEl} />
+	<button on:click={reveal}>see what happens</button>
 </div>
 
 <style>
+	.wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+	}
 </style>

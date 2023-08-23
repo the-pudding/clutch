@@ -11,9 +11,9 @@
 
 	<Swing />
 
-	<!-- <ToggleableChart type="scatter" />
-<ToggleableChart type="dot" />
-<ToggleableChart type="bar" /> -->
+	<ToggleableChart type="scatter" />
+	<ToggleableChart type="dot" />
+	<ToggleableChart type="bar" />
 </article>
 
 <style>
