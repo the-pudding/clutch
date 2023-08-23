@@ -2,7 +2,7 @@
 	import { getContext } from "svelte";
 	import { line, curveLinear } from "d3";
 
-	const { data, xGet, yGet } = getContext("LayerCake");
+	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
 	export let stroke = "#ccc";
 
