@@ -1,26 +1,26 @@
 <script>
-	import { getContext } from "svelte";
-
-	const { stepI, timeOnClock, currentStep } = getContext("swing");
-
-	$: wp1 = 50;
-	$: wp2 = 50;
 </script>
 
-<div class="war">
-	<h2 class="team1">
-		Bulls
-		<span>{wp1}% chance of winning</span>
-	</h2>
-	<div class="rope" />
-	<div class="flag" />
-	<h2 class="team2">Pacers <span>{wp2}% chance of winning</span></h2>
+<div class="wrapper">
+	<div class="war">
+		<h2 class="team1">Bulls</h2>
+		<div class="rope" />
+		<div class="flag" />
+		<h2 class="team2">Pacers</h2>
+	</div>
 </div>
 
 <style>
+	.wrapper {
+		position: sticky;
+		bottom: 0;
+		background: rgb(255, 255, 255, 0.95);
+		width: 100%;
+	}
 	.war {
 		display: flex;
-		width: 60%;
+		width: 100%;
+		margin: auto;
 		align-items: center;
 		justify-content: space-between;
 		position: relative;

@@ -3,7 +3,8 @@
 	import YouTubePlayer from "youtube-player";
 	import { onMount } from "svelte";
 
-	const { stepI, timeOnClock, currentStep } = getContext("swing");
+	export let start;
+	export let end;
 
 	let animationFrame;
 	let playerEl;
@@ -14,34 +15,16 @@
 	onMount(() => {
 		player = YouTubePlayer(playerEl, {
 			videoId: "KFB1L9j7xPs",
-			playerVars: { controls: 0, start: 0 }
+			playerVars: { controls: 0, start: start }
 		});
-		player.on("stateChange", (event) => {
-			if (event.data === 2) {
-				paused = true;
-			} else if (event.data === 1) {
-				paused = false;
-				trackTime();
-			}
-		});
+		playVideo();
+		pauseVideo();
 	});
 
-	$: $timeOnClock = 98 - currentTime; // TODO: but sometimes there's stoppage
-	$: start = $currentStep?.start || undefined;
-	$: end = $currentStep?.end || undefined;
-	$: pause = $currentStep?.pause || undefined;
-	$: $stepI, newStep();
-	$: if (currentTime >= end) restart();
-	$: if (currentTime >= pause) pauseVideo();
+	$: if (currentTime >= end) {
+		restart();
+	}
 
-	const newStep = () => {
-		if (!player) return;
-		if (start !== undefined) {
-			currentTime = start;
-			player.seekTo(start);
-			if (paused) playVideo();
-		}
-	};
 	const restart = () => {
 		player.seekTo(start);
 	};
@@ -65,13 +48,12 @@
 </script>
 
 <div class="wrapper">
+	<button on:click={paused ? playVideo : pauseVideo}
+		>{paused ? "play" : "pause"}</button
+	>
+	<button on:click={restart}>restart</button>
 	<div id="video" bind:this={playerEl} />
-	<p>video time: {currentTime.toFixed(2)}s</p>
-	<p>time on clock (this is off): {$timeOnClock.toFixed(2)}s</p>
 </div>
 
 <style>
-	.wrapper {
-		flex: 2;
-	}
 </style>
