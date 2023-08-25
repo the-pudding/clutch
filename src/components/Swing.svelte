@@ -1,7 +1,6 @@
 <script>
 	import copy from "$data/copy.json";
 	import TugOfWar from "$components/Swing.TugOfWar.svelte";
-	import Video from "$components/Swing.Video.svelte";
 
 	const chunks = copy.swing.map((d) => ({
 		...d,
@@ -11,15 +10,17 @@
 	}));
 </script>
 
-{#each chunks as { type, value, start, end, pause }}
+{#each chunks as { type, value, id, start, end, make, miss }}
 	{#if type === "text"}
 		<p>{@html value}</p>
-	{:else}
-		<Video {start} {end} {pause} />
+	{:else if type === "clip"}
+		<video {id} src={`assets/video/${id}.mp4`} controls={true} />
+	{:else if type === "tug"}
+		<TugOfWar start={+start} end={+end} make={+make} miss={+miss} />
 	{/if}
 {/each}
 
-<TugOfWar />
+<!-- <TugOfWar /> -->
 
 <style>
 </style>
